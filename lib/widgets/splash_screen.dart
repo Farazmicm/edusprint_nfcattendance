@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nfcdemo/ui/home/home.dart';
+import 'package:nfcdemo/ui/school_selection/school_group_login.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _SplashscreenState extends State<Splashscreen> {
 
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SchoolGro()));
+          context, MaterialPageRoute(builder: (context) => SchoolGroupWiseLogin()));
     });
   }
 
