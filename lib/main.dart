@@ -1,8 +1,33 @@
-import 'package:flutter/material.dart';
-import 'package:nfcdemo/common/app_routing.dart' as routing;
+import 'dart:async';
+import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nfcdemo/database_mng/database_provider.dart';
+import 'package:nfcdemo/models/models.dart';
+import 'package:nfcdemo/providers/connectivityProvider.dart';
+import 'package:nfcdemo/routing/appRouting.dart' as router;
+import 'package:nfcdemo/utilities/common.dart';
+import 'package:nfcdemo/utilities/utility.dart';
+import 'package:nfcdemo/widgets/global_context.dart';
+import 'package:provider/provider.dart';
+
+void main() async {
+  HttpOverrides.global = new MyHttpOverrides();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb) await FlutterDownloader.initialize();
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
+  ], child: const MyApp()));
+  await DatabaseProvider.initHive();
+  setConstantValue();
+  setDeviceInformation();
 }
 
 class MyApp extends StatefulWidget {
@@ -26,47 +51,68 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final Stream<bool> _getInternetState = (() {
+      late final StreamController<bool> controller;
+      controller = StreamController<bool>(
+        onListen: () async {
+          controller.add(Provider.of<ConnectivityProvider>(context).isOnline);
+          await controller.close();
+        },
+      );
+      return controller.stream;
+    })();
+
     var theme = Theme.of(context);
+    return StreamBuilder<bool>(
+        stream: _getInternetState,
+        builder: (context, snapshot) {
           return MaterialApp(
-            title: 'Edusprint Attendance',
+            navigatorKey: GlobalContext.navigatorKey,
+            title: 'Edusprint+',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              scaffoldBackgroundColor: Colors.grey.shade100,
+              //scaffoldBackgroundColor: Colors.grey.shade50,
               colorScheme: ThemeData().colorScheme.copyWith(
-                primary: Colors.blue.shade300,
-                primaryVariant: Colors.blue[50],
-                secondary: Colors.blue,
-                secondaryVariant:Colors.blue.shade600,
-                background: Colors.white,
-              ),
+                    primary: Colors.teal.shade600,
+                    primaryVariant: Colors.teal.shade100,
+                    secondary: Colors.teal,
+                    secondaryVariant: Colors.teal.shade400,
+                    background: Colors.white,
+                  ),
               appBarTheme: AppBarTheme(
                 titleSpacing: 10,
                 centerTitle: false,
                 elevation: 3,
               ),
               tabBarTheme: TabBarTheme(
-                  labelColor: theme.colorScheme.secondary,
-                  unselectedLabelColor: Colors.white,
-                  indicator: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(10)))),
+                labelColor: Colors.teal,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  color: Colors.teal.shade100,
+                ),
+                unselectedLabelColor: Colors.white,
+                unselectedLabelStyle:
+                    GoogleFonts.lato(fontWeight: FontWeight.w500),
+              ),
               bottomNavigationBarTheme: BottomNavigationBarThemeData(
                 type: BottomNavigationBarType.shifting,
                 backgroundColor: theme.colorScheme.background,
                 elevation: 8.0,
-                selectedItemColor: theme.colorScheme.primary,
-                unselectedItemColor: Colors.grey.shade600,
+                selectedItemColor: Colors.teal.shade600,
+                unselectedItemColor: Colors.grey.shade700,
                 showSelectedLabels: true,
               ),
               elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue.shade300,),
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.teal.shade500,
+                      ),
                       elevation: MaterialStateProperty.all(6),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(15)),
                       ),
                       textStyle: MaterialStateProperty.all(TextStyle(
                         color: Colors.white,
@@ -74,34 +120,32 @@ class _MyAppState extends State<MyApp> {
                       )))),
               textTheme: const TextTheme(
                 headline2: TextStyle(
-                    fontSize: 20, color: Colors.black54, fontWeight: FontWeight.w600),
+                    fontSize: 20,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w600),
                 headline3: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.teal,
                   fontSize: 15,
                 ),
               ),
               inputDecorationTheme: InputDecorationTheme(
-                  focusColor: Colors.blue,
+                  focusColor: Colors.teal.shade600,
                   floatingLabelBehavior: FloatingLabelBehavior.auto),
               cardTheme: CardTheme(
                   color: Colors.white,
                   clipBehavior: Clip.antiAlias,
-                  elevation: 2,
+                  elevation: 4,
                   shadowColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(9),
-                    side: BorderSide(color: Colors.grey.shade100, width: 1),
-
+                    borderRadius: BorderRadius.circular(12),
                   )),
-              dataTableTheme: DataTableThemeData(
-                decoration: BoxDecoration(shape: BoxShape.rectangle),
-                headingRowHeight: 35,
-                headingRowColor: MaterialStateProperty.all(Colors.grey.shade400),
-                dataRowHeight: 40,
-              ),
+              // checkboxTheme:CheckboxThemeData(
+              //   fillColor: MaterialStateProperty.all(Colors.teal),
+              // )
             ),
-            onGenerateRoute: routing.generateRoute,
-            initialRoute: "/",
+            onGenerateRoute: router.generateRoute,
+            initialRoute: '/',
           );
+        });
   }
 }

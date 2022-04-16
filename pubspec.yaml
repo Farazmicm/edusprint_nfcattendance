@@ -34,22 +34,35 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  form_field_validator: ^1.1.0
   http: ^0.13.4
   connectivity: ^3.0.6
   shared_preferences: ^2.0.9
+  top_snackbar_flutter: ^1.0.2
+  double_back_to_close_app: ^2.0.1
+  flutter_styled_toast: ^2.0.0
+  syncfusion_flutter_calendar: ^19.4.42
+  flutter_widget_from_html_core: ^0.8.4
   webview_flutter: ^3.0.0
+  skeletons: ^0.0.3
+  flutter_staggered_animations: ^1.0.0
   device_info_plus: ^3.2.2
+  expansion_tile_card: ^2.0.0
+  mime: ^1.0.1
+  flutter_downloader: ^1.7.2
   path_provider: ^2.0.9
   permission_handler: ^9.2.0
+  awesome_dialog: ^2.1.2
+  ndialog: ^4.1.1
   google_fonts: ^2.3.1
+  syncfusion_flutter_pdfviewer: ^19.4.55-beta
+  swipe_image_gallery: ^0.0.5
+  galleryimage: ^1.1.0
   hive:
   hive_flutter:
   provider: ^6.0.2
-  cached_network_image: ^3.2.0
-  flutter_styled_toast: ^2.0.0
-  awesome_dialog: ^2.1.2
   getwidget: ^2.0.5
-  form_field_validator: ^1.1.0
+
 
 dev_dependencies:
   flutter_test:
