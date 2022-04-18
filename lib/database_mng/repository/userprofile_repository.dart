@@ -1,20 +1,21 @@
-import 'package:nfcdemo/database_mng/db/user_db.dart';
-import 'package:nfcdemo/database_mng/db/userdetails_db.dart';
-import 'package:nfcdemo/models/VWStudentFullDetailNullable.dart';
+import 'package:nfcdemo/database_mng/db/userprofile_db.dart';
 import 'package:nfcdemo/models/models.dart';
 
 class UserProfileRepository {
   static UserProfileDB dbUserProfileObject = UserProfileDB();
 
-  static Future<int> addUserProfile(UserProfile userProfile) => dbUserProfileObject.addUserProfile(userProfile);
+  static Future<int> addUserProfile(UserProfileModel userProfileModel) =>
+      dbUserProfileObject.addUserProfile(userProfileModel);
 
-  static Future<bool> deleteUserProfile(int userID) => dbUserProfileObject.deleteUser(userID);
+  static Future<bool> deleteUserProfile(int userID) =>
+      dbUserProfileObject.deleteUserProfile(userID);
 
-  static Future<List<UserProfile>> getUserProfiles() => dbUserProfileObject.getUserProfiles();
+  static Future<List<UserProfileModel>> getUserProfiles() =>
+      dbUserProfileObject.getUserProfiles();
 
   static clearUserProfileData() => dbUserProfileObject.clearData();
 
-  static Future<User> getUserProfileByID(int userID) =>
+  static Future<UserProfileModel> getUserProfileByID(int userID) =>
       dbUserProfileObject.getUserProfileByID(userID);
 }
 

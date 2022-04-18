@@ -1,13 +1,13 @@
 import 'package:nfcdemo/models/models.dart';
 
 abstract class UserProfileInterface {
-  Future<int> addUserProfile(UserProfile userProfile);
+  Future<int> addUserProfile(UserProfileModel userProfileModel);
 
-  Future<List<UserProfile>> getUserProfiles();
+  Future<List<UserProfileModel>> getUserProfiles();
 
   Future<bool> deleteUserProfile(int userID);
 
-  Future<UserProfile> getUserProfileByID(int userID);
+  Future<UserProfileModel> getUserProfileByID(int userID);
 
   clearData();
 }

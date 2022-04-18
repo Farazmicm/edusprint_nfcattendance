@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nfcdemo/ui/dashboard/home.dart';
-import 'package:nfcdemo/ui/userProfile/parentProfileDetail.dart';
 import 'package:nfcdemo/ui/userProfile/studentProfileDetail.dart';
 import 'package:nfcdemo/widgets/layoutWidget.dart';
 
@@ -15,7 +14,6 @@ class _UserProfileState extends State<UserProfile> {
   int _currentIndex = 0;
   static const List<Widget> _pages = <Widget>[
     StudentProfileDetail(),
-    ParentProfileDetail(),
   ];
 
   @override
