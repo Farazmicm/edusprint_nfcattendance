@@ -51,6 +51,31 @@ class _HomeState extends State<Home> {
                     fontSize: 16),
               ),
               centerTitle: true,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.blue[50],
+                      child: InkWell(
+                        splashColor: Colors.blue[50],
+                        onTap: () {
+                          //Navigator.popAndPushNamed(context, AttendanceUserDetailsPage());
+                        },
+                        child: SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: Icon(
+                              Icons.person_add_alt_1_outlined,
+                              color: Colors.blueGrey,
+                            )),
+                      ),
+                      shadowColor: Colors.black,
+                      type: MaterialType.card,
+                    ),
+                  ),
+                )
+              ],
             ),
             body: SafeArea(
               child: FutureBuilder<bool>(
@@ -110,6 +135,7 @@ class _HomeState extends State<Home> {
     try{
       NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
         result.value = tag.data;
+
         NfcManager.instance.stopSession();
       });
     }catch(e){

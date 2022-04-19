@@ -11,6 +11,8 @@ import '../login/schoolGroupWiseLogin.dart';
 import 'package:nfcdemo/utilities/utility.dart';
 import 'package:flutter/services.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:nfcdemo/services/apiFunctions.dart';
+import 'package:nfcdemo/database_mng/repository/attendance_userprofile_repository.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -31,12 +33,21 @@ class _SplashscreenState extends State<Splashscreen> {
       if(await NfcManager.instance.isAvailable())
       {
         Timer(const Duration(seconds: 1), () async {
-          if (UserID == "") {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SchoolGroupWiseLogin()));
-            /*await UserDetailsRepository.getUsers().then((value) {
+          await AttendanceUserProfileRepository.getAttendanceUserProfiles().then((value) {
+            if(value.length > 0){
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }else{
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SchoolGroupWiseLogin()));
+            }
+          });
+
+          /*if (UserID == "") {
+
+            *//*await UserDetailsRepository.getUsers().then((value) {
           if (value.isNotEmpty) {
             showBottomSheetPage<void>(
                 context: context,
@@ -54,11 +65,11 @@ class _SplashscreenState extends State<Splashscreen> {
                 MaterialPageRoute(
                     builder: (context) => SchoolGroupWiseLogin()));
           }
-        });*/
+        });*//*
           } else {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Home()));
-          }
+          }*/
         });
       }else{
         AwesomeDialog(
