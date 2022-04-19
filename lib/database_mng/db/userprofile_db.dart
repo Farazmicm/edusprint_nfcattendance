@@ -1,15 +1,15 @@
 import 'package:hive/hive.dart';
-import 'package:nfcdemo/database_mng/interface/user_interface.dart';
+import 'package:nfcdemo/database_mng/interface/userprofile_interface.dart';
 import 'package:nfcdemo/models/models.dart';
 
 class UserProfileDB implements UserProfileInterface {
   final String TABLE_NAME = "userprofile";
 
   @override
-  Future<int> addUserProfile(UserProfile userProfile) async {
+  Future<int> addUserProfile(UserProfileModel userProfileModel) async {
     try {
       return await Hive.openBox(TABLE_NAME).then((box) async {
-        return await box.add(userProfile.toJson());
+        return await box.add(userProfileModel.toJson());
       });
     } catch (e) {
       print("addUserProfile: " + e.toString());
@@ -18,13 +18,14 @@ class UserProfileDB implements UserProfileInterface {
   }
 
   @override
-  Future<List<UserProfile>> getUserProfiles() async {
-    List<UserProfile> listUsers = List<UserProfile>.empty(growable: true);
+  Future<List<UserProfileModel>> getUserProfiles() async {
+    List<UserProfileModel> listUsers =
+        List<UserProfileModel>.empty(growable: true);
     try {
       var box = await Hive.openBox(TABLE_NAME);
       for (int i = 1; i < box.length; i++) {
         Map<String, dynamic> userMap = Map.from(box.getAt(i));
-        listUsers.add(UserProfile.fromJson(userMap));
+        listUsers.add(UserProfileModel.fromJson(userMap));
       }
     } catch (e) {
       print("getUserProfiles: " + e.toString());
@@ -39,7 +40,7 @@ class UserProfileDB implements UserProfileInterface {
       var box = await Hive.openBox(TABLE_NAME);
       for (int i = 1; i < box.length; i++) {
         Map<String, dynamic> userMap = Map.from(box.getAt(i));
-        var oUser = UserProfile.fromJson(userMap);
+        var oUser = UserProfileModel.fromJson(userMap);
         if (oUser.UserID == userID) {
           box.deleteAt(i);
           o = true;
@@ -57,22 +58,18 @@ class UserProfileDB implements UserProfileInterface {
   }
 
   @override
-  Future<User> getUserProfileByID(int userID) async {
+  Future<UserProfileModel> getUserProfileByID(int userID) async {
     try {
-      return await getUsers().then((value) {
+      return await getUserProfiles().then((value) {
         if (value.isNotEmpty && value.length > 0) {
           return value.where((element) => element.UserID == userID).first;
         } else {
-          return UserProfile.toNullObject();
+          return UserProfileModel();
         }
       });
     } catch (e) {
       print("getUserProfileByID: " + e.toString());
-      return UserProfile.toNullObject();
+      return UserProfileModel();
     }
   }
-
-
-
-
 }

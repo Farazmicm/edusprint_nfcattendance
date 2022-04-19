@@ -13,7 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../models/downloadModel.dart';
-import '../ui/fileWidget/videoPlayer.dart';
 import '../utilities/constants.dart';
 
 class DownloadWidget extends StatefulWidget {

@@ -146,8 +146,8 @@ class User {
   }
 }
 
-class AutoGenerate {
-  AutoGenerate({
+class UserProfileModel {
+  UserProfileModel({
     this.ExActivatedFrom,
     this.ExUserName,
     this.ExIsActive,
@@ -171,9 +171,7 @@ class AutoGenerate {
     this.NationalityID,
     this.NationalityID1,
     this.NativePlace,
-
     this.BirthPlace,
-
     this.SocialSecurityNumber,
     this.IsPhysicallyChallenged,
     this.UserImage,
@@ -184,7 +182,6 @@ class AutoGenerate {
     this.AdharcardReferenceNumber,
     this.GovernmentUID,
     this.MaritalStatusID,
-
     this.DigitalSignatureImageName,
     this.DigitalSignatureImageTitle,
     this.ImageTitle1,
@@ -210,7 +207,6 @@ class AutoGenerate {
     this.CreatedOn,
     this.UpdatedBy,
     this.UpdatedOn,
-
     this.ExtColInt1,
     this.ExtColInt2,
     this.ExtColInt3,
@@ -374,7 +370,7 @@ class AutoGenerate {
   late final String? ExtColText8L;
   late final String? DeletedOn;
 
-  AutoGenerate.fromJson(Map<String, dynamic> json){
+  UserProfileModel.fromJson(Map<String, dynamic> json) {
     ExActivatedFrom = json['ExActivatedFrom'] ?? false;
     ExUserName = json['ExUserName'] ?? "";
     ExIsActive = json['ExIsActive'] ?? false;
