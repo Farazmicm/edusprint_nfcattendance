@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:nfcdemo/widgets/layoutWidget.dart';
@@ -42,3 +43,4 @@ class _WebViewLoadingState extends State<WebViewLoading> {
         ));
   }
 }
+*/

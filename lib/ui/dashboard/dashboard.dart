@@ -13,7 +13,6 @@ import 'package:nfcdemo/models/VWStudentFullDetailNullable.dart';
 import 'package:nfcdemo/services/apiFunctions.dart';
 import 'package:nfcdemo/utilities/utility.dart';
 import 'package:nfcdemo/widgets/widgets.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../utilities/constants.dart';
 
@@ -26,7 +25,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
 
-  late WebViewController webViewController;
+  //late WebViewController webViewController;
 
   @override
   void initState() {

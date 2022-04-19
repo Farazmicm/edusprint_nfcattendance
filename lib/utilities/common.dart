@@ -15,6 +15,8 @@ import 'package:nfcdemo/ui/login/firstTimeChangePassword.dart';
 import 'package:nfcdemo/utilities/utility.dart';
 import 'package:nfcdemo/widgets/global_context.dart';
 import 'package:nfcdemo/widgets/widgets.dart';
+import 'package:nfcdemo/models/attendanceUserDetailsModel.dart';
+import 'package:nfcdemo/database_mng/repository/attendance_userprofile_repository.dart';
 
 import 'constants.dart';
 
@@ -69,7 +71,6 @@ Future insertStudentFullDetail(Map<String, dynamic> oResponse) async {
   }
 }
 
-
 Future setConstantValue() async {
   try {
     ClientWEBURL = await Utility.readLocalStorage(
@@ -81,7 +82,7 @@ Future setConstantValue() async {
 
     imageFileHostedPath = ClientWEBURL + '/?imageFileHostedPath=';
 
-    if (ClientWEBURL != "") {
+   /* if (ClientWEBURL != "") {
       Map<String, dynamic> oStudentFullDetail = convert.jsonDecode(
           await Utility.readLocalStorage(
               localStorageKeyEnum.StudentFullDetail.toString()));
@@ -125,7 +126,7 @@ Future setConstantValue() async {
         yearStartDate = objStudentYears.StartDate;
         yearEndDate = objStudentYears.EndDate;
       }
-    }
+    }*/
   } catch (e) {
     print(e);
   }
@@ -450,6 +451,23 @@ Future<void> processUserLogin(
   } else {
     customAlertForError(context, 'Invalid',
         "Some error occured while processing your request. Please contact to Administrator");
+  }
+}
+
+Future<void> getAllUsers() async{
+  try {
+      var allUsers = await getAllUsersFromWeb();
+      if(allUsers.isNotEmpty){
+        var lstAttendanceUserDetails = List.from(allUsers).map((e) => AttendanceUserDetails.fromJson(e)).toList();
+        await AttendanceUserProfileRepository.clearAttendanceUserProfileData();
+        await AttendanceUserProfileRepository.addAttendanceUserProfileAll(lstAttendanceUserDetails).then((value) => print("Data: " + convert.jsonEncode(value)));
+
+        await AttendanceUserProfileRepository.getAttendanceUserProfiles().then((value) => print("All Data : ${convert.jsonEncode(value)}"));
+
+
+      }
+  } catch(e){
+    print("GetAllUsers: a ${e.toString()}");
   }
 }
 

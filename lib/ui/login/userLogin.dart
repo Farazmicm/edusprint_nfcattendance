@@ -178,12 +178,21 @@ class _UserLoginState extends State<UserLogin> {
           Map<String, dynamic> oRes =
               await userSignInPostNew(oUserName, oPassword);
           if (oRes.isNotEmpty) {
+
             print("Login Response: " + convert.jsonEncode(oRes));
 
             var oUser = User.fromJson(oRes["User"]);
             oUser.ExUserName = oUserName;
             oUser.Password = oPassword;
             oUser.ExSchoolGroupCode = ClientShortCode;
+
+            UserID = oUser.UserID.toString();
+
+            await getAllUsers().then((value) {
+              dialog.dismiss();
+              Navigator.popAndPushNamed(context, "dashboard");
+            });
+
             /*await verifyUser(oRes, oUser).then((value) async {
               await processUserLogin(value);
             });*/

@@ -18,7 +18,6 @@ import 'package:provider/provider.dart';
 
 void main() async {
   HttpOverrides.global = new MyHttpOverrides();
-
   WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) await FlutterDownloader.initialize();
 

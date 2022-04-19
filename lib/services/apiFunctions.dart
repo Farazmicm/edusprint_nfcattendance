@@ -214,229 +214,6 @@ Future<bool> syncError(String methodName, Object error) async {
   }
 }
 
-Future<bool> verifyLogin(String methodName, Object error) async {
-  try {
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-    Map<String, dynamic> errorLog = {"MethodName": methodName, "Error": error};
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Error/HandleMobileDBError?pMobileErrorLog=$errorLog';
-    var oResponse = await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-
-    if (oResponse["Success"])
-      return true;
-    else
-      return false;
-  } catch (e) {
-    throw ("Error:$e");
-  }
-}
-
-Future<dynamic> getStudentProfileData() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        "/Mobile/GetStudentDetails?StudentID=$UserID&YearMasterID=$yearMasterID";
-
-    headers['IMR'] = '1';
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token;IMR=1';
-
-    return await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-  } catch (e) {}
-}
-
-Future<dynamic> getParentProfileData() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        "/Mobile/GetStudentParentDetails?StudentID=$UserID";
-
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    return await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-  } catch (e) {}
-}
-
-//Get Student Attendance
-Future<dynamic> getStudentAttendance() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetStudentAttendance?StudentID=${UserID}&YearMasterID=$yearMasterID';
-
-    headers['IMR'] = '1';
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token;IMR=1';
-
-    oResponse = await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-
-    // //Write Local Storage
-    // Utility.writeLocalStorage(localStorageKeyEnum.StudentAttendance.toString(),
-    //     convert.jsonEncode(oResponse));
-
-    return oResponse;
-  } catch (e) {
-    //syncError("getStudentAttendance", e);
-  }
-}
-
-//Get Log Book Information
-Future<dynamic> getLogBookInformation() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetLogBookInformation?StudentID=${UserID}&ClassMasterID=${classMasterID}&DivisionMasterID=${divisionMasterID}&SchoolID=${schoolID}&YearMasterID=$yearMasterID';
-
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    oResponse = await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-
-    // //Write Local Storage
-    // await Utility.writeLocalStorage(
-    //     localStorageKeyEnum.LogBookInformation.toString(),
-    //     convert.jsonEncode(oResponse));
-
-    return oResponse;
-  } catch (e) {
-    //syncError("getLogBookInformation", e);
-  }
-}
-
-//Get Event information
-Future<dynamic> getEventInformation() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetStudentEventCalendar?StudentID=${UserID}&YearID=${yearMasterID}&SchoolID=$schoolID';
-
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    oResponse = await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-    // //Write Local Storage
-    // await Utility.writeLocalStorage(
-    //     localStorageKeyEnum.EventInformation.toString(),
-    //     convert.jsonEncode(oResponse));
-    return oResponse;
-  } catch (e) {
-    //syncError("getEventInformation", e);
-  }
-}
-
-//Get TimeTable
-Future<dynamic> getTimeTableDetails() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetStudentTimeTableInformation?StudentID=${UserID}&YearID=${yearMasterID}&SchoolID=$schoolID';
-
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    return await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-  } catch (e) {
-    print(e);
-    //syncError("getTimeTable", e);
-  }
-}
-
-//Get Ecampus info
-Future<dynamic> getEcampusInfo(String moduleType) async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetEcampusModuleByType?YearMasterID=$yearMasterID&ModuleType=$moduleType';
-
-    headers['IMR'] = '1';
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token;IMR=1';
-
-    oResponse = await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-    return oResponse;
-  } catch (e) {
-    print(e);
-    // syncError("getEcampusInfo", e);
-  }
-}
-
-//Get Ecampus info
-Future<dynamic> getGetEcampusData(String moduleName) async {
-  try {
-    String oUrl =
-        ClientWEBURL + '/' + ClientShortCode + '/Mobile/GetEcampusData';
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    Map oBody = {
-      'StudentID': UserID,
-      //  'SubjectIDs': ''
-      'HouseID': houseID,
-      'GenderID': genderID,
-      'SectionMasterID': sectionMasterID,
-      'SchoolGroupID': schoolGroupID,
-      'ClassMasterID': classMasterID,
-      'DivisionMasterID': divisionMasterID,
-      'SchoolID': schoolID,
-      'YearMasterID': yearMasterID,
-      'ModuleName': moduleName,
-    };
-
-    oResponse = await http
-        .post(Uri.parse(oUrl), headers: headers, body: oBody)
-        .then((http.Response response) {
-      print("getECampusDetail Response: " + response.body);
-      return convert.jsonDecode(response.body);
-    });
-    return oResponse;
-  } catch (e) {
-    print("getECampusDetail API: " + e.toString());
-    //syncError("getGetEcampusData", e);
-  }
-}
 
 Future<dynamic> ecampusWebFromURL(String type) async {
   try {
@@ -624,70 +401,6 @@ Future<bool> logOutUser() async {
   }
 }
 
-//Student medical details
-Future<dynamic> getStudentFeesDetail() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetFeesData?StudentID=$UserID&SchoolID=$schoolID&YearMasterID=$yearMasterID';
-
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    return await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-  } catch (e) {
-    //await syncError("getStudentMedicalDetail", e);
-  }
-}
-
-//Student medical details
-Future<dynamic> getStudentMedicalDetail() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/GetMedicalDetails?StudentID=$UserID';
-
-    headers['IMR'] = '1';
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token;IMR=1';
-
-    return await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-  } catch (e) {
-    // await syncError("getStudentMedicalDetail", e);
-  }
-}
-
-//Report Card Details
-Future<dynamic> getReportCard() async {
-  try {
-    String oUrl = ClientWEBURL +
-        '/' +
-        ClientShortCode +
-        '/Mobile/StudentReportCardList?StudentID=$UserID';
-
-    headers['MCampusTokenID'] = Token;
-    headers['Cookies'] = 'MCampusTokenID=$Token';
-
-    return await http
-        .post(Uri.parse(oUrl), headers: headers)
-        .then((http.Response response) {
-      return convert.jsonDecode(response.body);
-    });
-  } catch (e) {
-    print(e);
-    //await syncError("getReportCard", e);
-  }
-}
 
 //Contactus details
 Future<dynamic> getContactus() async {
@@ -759,3 +472,28 @@ Future<dynamic> postContactus(ContactusModel contactusModel) async {
     print(e);
   }
 }
+
+
+//#region Attendance Methods
+Future<dynamic> getAllUsersFromWeb()async{
+  try{
+    String oUrl = ClientWEBURL +
+        '/' +
+        ClientShortCode +
+        '/ExternalAPI/GetAllUsers';
+
+    print(oUrl);
+    headers['MCampusTokenID'] = Token;
+    headers['Cookies'] = 'MCampusTokenID=$Token';
+
+    return await http
+        .get(Uri.parse(oUrl), headers: headers)
+        .then((http.Response response) {
+      print(convert.jsonDecode(response.body));
+          return convert.jsonDecode(response.body);
+    });
+  }catch(e){
+    print("getAllUsers: ${e.toString()}");
+  }
+}
+//#endregion Attendance Methods

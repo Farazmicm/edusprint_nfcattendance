@@ -6,7 +6,6 @@ import 'package:nfcdemo/ui/login/schoolGroupWiseLogin.dart';
 import 'package:nfcdemo/ui/login/userLogin.dart';
 import 'package:nfcdemo/ui/screens/webViewLoading.dart';
 import 'package:nfcdemo/ui/splashscreen/splashscreen.dart';
-import 'package:nfcdemo/ui/userProfile/studentProfile.dart';
 import 'package:nfcdemo/widgets/nointernet_page.dart';
 import 'package:provider/provider.dart';
 
@@ -32,15 +31,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         return UserLogin();
       case 'dashboard':
         return Home();
-      case 'studentprofile':
-        return StudentProfile(appBarTitle: settings.arguments.toString());
       case 'changeyear':
         return ChangeYear(appBarTitle: settings.arguments.toString());
-      case 'webviewcall':
+      /*case 'webviewcall':
         return WebViewLoading(
           webViewUrl: oArguments.first,
           title: oArguments.last,
-        );
+        );*/
       case 'pdfviewer':
         return PDFViewerForNetwork(
           url: oArguments.first,

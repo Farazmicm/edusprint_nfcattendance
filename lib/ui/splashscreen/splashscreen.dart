@@ -5,9 +5,12 @@ import 'package:nfcdemo/database_mng/repository/userdetails_repository.dart';
 import 'package:nfcdemo/ui/dashboard/home.dart';
 import 'package:nfcdemo/utilities/constants.dart';
 import 'package:nfcdemo/widgets/loggedin_users.dart';
-
+import 'package:nfc_manager/nfc_manager.dart';
 import '../../widgets/widgets.dart';
 import '../login/schoolGroupWiseLogin.dart';
+import 'package:nfcdemo/utilities/utility.dart';
+import 'package:flutter/services.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -24,13 +27,16 @@ class _SplashscreenState extends State<Splashscreen> {
   }
 
   void processStartupLogic() async {
-    Timer(const Duration(seconds: 1), () async {
-      if (UserID == "") {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SchoolGroupWiseLogin()));
-        /*await UserDetailsRepository.getUsers().then((value) {
+    try{
+      if(await NfcManager.instance.isAvailable())
+      {
+        Timer(const Duration(seconds: 1), () async {
+          if (UserID == "") {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SchoolGroupWiseLogin()));
+            /*await UserDetailsRepository.getUsers().then((value) {
           if (value.isNotEmpty) {
             showBottomSheetPage<void>(
                 context: context,
@@ -49,11 +55,26 @@ class _SplashscreenState extends State<Splashscreen> {
                     builder: (context) => SchoolGroupWiseLogin()));
           }
         });*/
-      } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          }
+        });
+      }else{
+        AwesomeDialog(
+            context: context,
+            dialogType: DialogType.ERROR,
+            animType: AnimType.SCALE,
+            headerAnimationLoop: true,
+            title: 'Error',
+            desc: 'Your Device not Support NFC Feature.',
+            btnOkOnPress: () { SystemNavigator.pop(); },
+            btnOkColor: Colors.red)
+          ..show();
       }
-    });
+    }catch(e){
+      print("processStartupLogic: " + e.toString());
+    }
   }
 
   @override
